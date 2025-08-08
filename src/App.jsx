@@ -193,7 +193,7 @@ function App() {
     }, [playerCharacter, addCombatMessage]);
 
     const resetCharacter = useCallback(() => {
-        console.log("resetCharacter prev player:", prev);
+        console.log("resetCharacter current player:", playerCharacter);
         setPlayerCharacter(prev => {
             const healedCharacter = {
                 ...prev,
