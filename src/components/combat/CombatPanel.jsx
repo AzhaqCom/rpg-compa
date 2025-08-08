@@ -67,14 +67,6 @@ const CombatPanel = ({
     // Cet useEffect a été supprimé car la logique de défaite est gérée dans le parent (App.js).
 
     const handleNextTurn = useCallback(() => {
-        const allEnemiesDefeated = combatEnemies.every(enemy => enemy.currentHP <= 0);
-        if (allEnemiesDefeated) {
-            setCombatPhase('end');
-            setVictory(true);
-            addCombatMessage("Victoire ! Les ennemis sont vaincus.", 'victory');
-            return;
-        }
-        
         // Nouvelle vérification : si le joueur est vaincu, on termine immédiatement.
         // Cela permet de s'assurer que le combat s'arrête si le joueur meurt
         // avant même que le tour d'un ennemi ne se termine.
@@ -279,6 +271,20 @@ const CombatPanel = ({
             handleCastSpellClick();
         }
     }, [actionTargets, playerAction, handleCastSpellClick]);
+
+    // Check for combat end conditions whenever enemies change
+    useEffect(() => {
+        if (combatPhase === 'end' || combatEnemies.length === 0) {
+            return;
+        }
+
+        const allEnemiesDefeated = combatEnemies.every(enemy => enemy.currentHP <= 0);
+        if (allEnemiesDefeated) {
+            setCombatPhase('end');
+            setVictory(true);
+            addCombatMessage("Victoire ! Les ennemis sont vaincus.", 'victory');
+        }
+    }, [combatEnemies, combatPhase, addCombatMessage]);
 
     useEffect(() => {
         console.log("useEffect d'initialisation lancé. Phase :", combatPhase, " combatKey :", combatKey);
