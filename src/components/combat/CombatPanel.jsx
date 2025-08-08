@@ -43,6 +43,19 @@ const CombatPanel = ({
     const [defeated, setDefeated] = useState(false);
     const [victory, setVictory] = useState(false);
 
+    // Reset combat phase when combatKey changes (for replay functionality)
+    useEffect(() => {
+        console.log("Combat key changed, resetting combat phase. combatKey:", combatKey);
+        setCombatPhase('initiative-roll');
+        setDefeated(false);
+        setVictory(false);
+        setCombatEnemies([]);
+        setTurnOrder([]);
+        setCurrentTurnIndex(0);
+        setPlayerAction(null);
+        setActionTargets([]);
+    }, [combatKey]);
+
     console.log("CombatPanel rendu. combatKey :", combatKey, " Phase :", combatPhase, " Vie du joueur :", playerCharacter.currentHP);
     
     const resetCombat = () => {
